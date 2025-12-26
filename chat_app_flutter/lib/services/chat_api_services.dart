@@ -4,12 +4,15 @@ import 'package:chat_app_flutter/models/comment_model.dart';
 import 'package:http/http.dart' as http;
 
 class ChatApiServices {
+  ChatApiServices({http.Client? client}) : _client = client ?? http.Client();
+
+  final http.Client _client;
   final String _baseUrl = 'https://dummyjson.com';
 
   Future<List<CommentModel>> fetchComments({int limit = 10}) async {
     final uri = Uri.parse('$_baseUrl/comments?limit=$limit');
 
-    final response = await http.get(uri);
+    final response = await _client.get(uri);
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> decoded =
