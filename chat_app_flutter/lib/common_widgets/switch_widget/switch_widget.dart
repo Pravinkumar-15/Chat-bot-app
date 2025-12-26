@@ -1,6 +1,4 @@
 import 'package:chat_app_flutter/common_widgets/switch_widget/tap_segment.dart';
-import 'package:chat_app_flutter/constants/constant.dart';
-import 'package:chat_app_flutter/global.dart';
 import 'package:flutter/material.dart';
 
 class SwitchWidget extends StatelessWidget {
@@ -20,10 +18,8 @@ class SwitchWidget extends StatelessWidget {
   final Color activeColor;
   void select(bool isRight) {
     if (controller.value == isRight) {
-      Global.isClickedHistory.add(true);
       return;
     }
-    Global.isClickedHistory.add(false);
     controller.value = isRight;
     onChanged?.call(isRight);
   }

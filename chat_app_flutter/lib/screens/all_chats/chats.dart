@@ -90,61 +90,67 @@ class _ChatsState extends State<Chats> {
               case PageState.settings:
                 return Settings();
               default:
-                return CustomScrollView(
-                  slivers: [
-                    SliverAppBar(
-                      pinned: false,
-                      floating: true,
-                      snap: false,
-                      backgroundColor: Theme.of(
-                        context,
-                      ).scaffoldBackgroundColor,
-                      surfaceTintColor: Colors.transparent,
-                      elevation: 0,
+                return ValueListenableBuilder<bool>(
+                  valueListenable: _switchController,
+                  builder: (context, isHistorySelected, _) {
+                    return CustomScrollView(
+                      slivers: [
+                        SliverAppBar(
+                          pinned: false,
+                          floating: true,
+                          snap: false,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).scaffoldBackgroundColor,
+                          surfaceTintColor: Colors.transparent,
+                          elevation: 0,
+                          title: SwitchWidget(
+                            leftText: 'Users',
+                            rightText: 'Chat History',
+                            controller: _switchController,
+                          ),
+                          bottom: const PreferredSize(
+                            preferredSize: Size.fromHeight(1),
+                            child: Divider(height: 1, thickness: 1),
+                          ),
+                        ),
+                        if (isHistorySelected)
+                          const SliverFillRemaining(
+                            hasScrollBody: false,
+                            child: ChatHistory(),
+                          )
+                        else
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                if (chatProvider.errorMessage != null) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Text(chatProvider.errorMessage!),
+                                  );
+                                }
 
-                      title: SwitchWidget(
-                        leftText: 'Users',
-                        rightText: 'Chat History',
-                        controller: _switchController,
-                      ),
-                      bottom: const PreferredSize(
-                        preferredSize: Size.fromHeight(1),
-                        child: Divider(height: 1, thickness: 1),
-                      ),
-                    ),
+                                if (chatProvider.comments.isEmpty) {
+                                  return const Padding(
+                                    padding: EdgeInsets.all(16),
+                                    child: Text('No comments found'),
+                                  );
+                                }
 
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          if (chatProvider.errorMessage != null) {
-                            return Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Text(chatProvider.errorMessage!),
-                            );
-                          }
+                                final comment = chatProvider.comments[index];
 
-                          if (chatProvider.comments.isEmpty) {
-                            return const Padding(
-                              padding: EdgeInsets.all(16),
-                              child: Text('No comments found'),
-                            );
-                          }
-
-                          final comment = chatProvider.comments[index];
-
-                          return ChatAndHistoryWidgets(
-                            comment: comment,
-                            index: index,
-                          );
-                        },
-                        childCount: chatProvider.isLoading
-                            ? 1
-                            : (chatProvider.comments.isEmpty
+                                return AllChats(comment: comment, index: index);
+                              },
+                              childCount: chatProvider.isLoading
                                   ? 1
-                                  : chatProvider.comments.length),
-                      ),
-                    ),
-                  ],
+                                  : (chatProvider.comments.isEmpty
+                                        ? 1
+                                        : chatProvider.comments.length),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 );
             }
           },
