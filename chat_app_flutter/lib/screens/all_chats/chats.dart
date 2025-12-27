@@ -116,7 +116,7 @@ class _ChatsState extends State<Chats> {
                         ),
                         if (isHistorySelected)
                           const SliverFillRemaining(
-                            hasScrollBody: false,
+                            hasScrollBody: true,
                             child: ChatHistory(),
                           )
                         else

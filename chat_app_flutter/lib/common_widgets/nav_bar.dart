@@ -30,17 +30,57 @@ class NavBar extends StatelessWidget {
         return BottomNavigationBar(
           currentIndex: asyncSnapshot.data?["index"] ?? 0,
           onTap: (index) => _onItemTapped(context, index),
-          items: const [
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 12,
+          ),
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
+              icon: Image.asset(
+                "assets/images/home-agreement.png",
+                height: 20,
+                width: 20,
+              ),
+              activeIcon: Image.asset(
+                "assets/images/home-agreement.png",
+                height: 20,
+                width: 20,
+                color: Colors.blue,
+              ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.local_offer_outlined),
+              icon: Image.asset(
+                "assets/images/price-tag.png",
+                height: 20,
+                width: 20,
+              ),
+              activeIcon: Image.asset(
+                "assets/images/price-tag.png",
+                height: 20,
+                width: 20,
+                color: Colors.blue,
+              ),
               label: 'Offers',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings_outlined),
+              icon: Image.asset(
+                "assets/images/settings.png",
+                height: 20,
+                width: 20,
+              ),
+              activeIcon: Image.asset(
+                "assets/images/settings.png",
+                height: 20,
+                width: 20,
+                color: Colors.blue,
+              ),
               label: 'Settings',
             ),
           ],
